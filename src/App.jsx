@@ -25,6 +25,7 @@ export default function App() {
           <Route path="/clientes/ver/:id" element={<ClienteDetalle />} />
           <Route path="productos/lista" element={<ProductosLista />} />
           <Route path="productos/nuevo" element={<ProductoFormulario />} />
+          <Route path="/productos/detalle/:id" element={<ProductoDetalle />} />
           <Route path="facturas/lista" element={<FacturasLista />} />
           <Route path="/facturas/nueva" element={<FacturaFormulario />} />
           <Route path="/facturas/ver/:id" element={<FacturaDetalle />} />
