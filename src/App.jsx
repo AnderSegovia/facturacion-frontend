@@ -7,6 +7,7 @@ import ClienteFormulario from './pages/ClienteFormulario';
 import ClienteDetalle from './pages/ClienteDetalle';
 import ProductosLista from './pages/ProductosLista'; 
 import ProductoFormulario from './pages/ProductoFormulario';
+import ProductoDetalle from './pages/ProductoDetalle';
 import FacturasLista from './pages/FacturasLista';   
 import FacturaFormulario from './pages/FacturaFormulario';
 import FacturaDetalle from './pages/FacturaDetalle';
