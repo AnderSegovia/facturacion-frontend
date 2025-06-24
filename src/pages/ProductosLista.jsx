@@ -56,11 +56,11 @@ export default function ProductosLista() {
             <thead className="bg-gray-100 text-gray-700 text-sm">
               <tr>
                 <th className="px-4 py-2 text-left">Nombre</th>
-                <th className="px-4 py-2 text-left">Categoría</th>
+                <th className="px-4 py-2 text-left hidden md:table-cell">Categoría</th>
                 <th className="px-4 py-2 text-left">Marca</th>
                 <th className="px-4 py-2 text-left">Precio</th>
                 <th className="px-4 py-2 text-left">Stock</th>
-                <th className="px-4 py-2 text-left">Estado</th>
+                <th className="px-4 py-2 text-left hidden md:table-cell">Estado</th>
                 <th className="px-4 py-2 text-center">Acciones</th>
               </tr>
             </thead>
@@ -91,18 +91,20 @@ export default function ProductosLista() {
                     </span>
                   </td>
                   <td className="px-4 py-2 text-center space-x-2">
-                    <button
-                      onClick={() => navigate(`/productos/editar/${producto._id}`)}
-                      className="text-sm bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => eliminarProducto(producto._id)}
-                      className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                    >
-                      Eliminar
-                    </button>
+                    <div className="flex flex-col md:flex-row justify-center gap-2">
+                      <button
+                        onClick={() => navigate(`/productos/editar/${producto._id}`)}
+                        className="text-sm bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => eliminarProducto(producto._id)}
+                        className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -12,9 +12,6 @@ import FacturasLista from './pages/FacturasLista';
 import FacturaFormulario from './pages/FacturaFormulario';
 import FacturaDetalle from './pages/FacturaDetalle';
 
-
-
-
 export default function App() {
   return (
     <Router>
