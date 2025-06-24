@@ -67,11 +67,7 @@ export default function FacturasLista() {
             <tbody className="text-sm text-gray-800">
               {facturas.map((f, i) => (
                 <tr key={f._id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  <td className="px-4 py-2 font-medium text-blue-600 hover:underline cursor-pointer">
-                    <span onClick={() => navigate(`/clientes/ver/${cliente._id}`)}>
-                      {cliente.nombre}
-                    </span>
-                  </td>
+                  <td className="px-4 py-2">{f.cliente?.nombre || 'Cliente eliminado'}</td>
                   <td className="px-4 py-2">{f.tipo_documento}</td>
                   <td className="px-4 py-2">
                     {new Date(f.fecha).toLocaleDateString('es-SV')}
