@@ -67,7 +67,14 @@ export default function ProductosLista() {
             <tbody className="text-sm text-gray-800">
               {productos.map((producto, i) => (
                 <tr key={producto._id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  <td className="px-4 py-2 font-medium">{producto.nombre}</td>
+                  <td className="px-4 py-2 font-medium">
+                    <button
+                      onClick={() => navigate(`/productos/detalle/${producto._id}`)}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {producto.nombre}
+                    </button>
+                  </td>
                   <td className="px-4 py-2">{producto.categoria || '-'}</td>
                   <td className="px-4 py-2">{producto.marca || '-'}</td>
                   <td className="px-4 py-2">${producto.precio_venta?.toFixed(2)}</td>
