@@ -58,9 +58,9 @@ export default function ClientesLista() {
                 <th className="px-4 py-2 text-left">Nombre</th>
                 <th className="px-4 py-2 text-left">Tipo</th>
                 <th className="px-4 py-2 text-left">DUI / NRC</th>
-                <th className="px-4 py-2 text-left">Teléfono</th>
-                <th className="px-4 py-2 text-left">Correo</th>
-                <th className="px-4 py-2 text-left">Estado</th>
+                <th className="px-4 py-2 text-left hidden md:table-cell">Teléfono</th>
+                <th className="px-4 py-2 text-left hidden md:table-cell">Correo</th>
+                <th className="px-4 py-2 text-left hidden md:table-cell">Estado</th>
                 <th className="px-4 py-2 text-center">Acciones</th>
               </tr>
             </thead>
@@ -85,20 +85,22 @@ export default function ClientesLista() {
                       {cliente.estado.toUpperCase()}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-center space-x-2">
-                    <button
-                      onClick={() => navigate(`/clientes/editar/${cliente._id}`)}
-                      className="text-sm bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => eliminarCliente(cliente._id)}
-                      className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                    >
-                      Eliminar
-                    </button>
-                  </td>
+                    <td className="px-4 py-2 text-center">
+                    <div className="flex flex-col md:flex-row justify-center gap-2">
+                        <button
+                        onClick={() => navigate(`/clientes/editar/${cliente._id}`)}
+                        className="text-sm bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
+                        >
+                        Editar
+                        </button>
+                        <button
+                        onClick={() => eliminarCliente(cliente._id)}
+                        className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                        >
+                        Eliminar
+                        </button>
+                    </div>
+                    </td>
                 </tr>
               ))}
             </tbody>
