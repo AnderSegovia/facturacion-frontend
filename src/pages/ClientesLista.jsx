@@ -67,7 +67,14 @@ export default function ClientesLista() {
             <tbody className="text-sm text-gray-800">
               {clientes.map((cliente, i) => (
                 <tr key={cliente._id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  <td className="px-4 py-2 font-medium">{cliente.nombre}</td>
+                  <td className="px-4 py-2 font-medium">
+                  <button
+                    onClick={() => navigate(`/clientes/ver/${cliente._id}`)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {cliente.nombre}
+                  </button>
+                </td>
                   <td className="px-4 py-2">{cliente.tipo}</td>
                   <td className="px-4 py-2">
                     {cliente.tipo === 'Consumidor Final' ? cliente.dui : cliente.nrc || '-'}
