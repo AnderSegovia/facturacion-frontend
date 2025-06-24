@@ -4,11 +4,13 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import ClientesLista from './pages/ClientesLista';
 import ClienteFormulario from './pages/ClienteFormulario';
+import ClienteDetalle from './pages/ClienteDetalle';
 import ProductosLista from './pages/ProductosLista'; 
 import ProductoFormulario from './pages/ProductoFormulario';
 import FacturasLista from './pages/FacturasLista';   
 import FacturaFormulario from './pages/FacturaFormulario';
 import FacturaDetalle from './pages/FacturaDetalle';
+
 
 
 
@@ -20,6 +22,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="clientes/lista" element={<ClientesLista />} />
           <Route path="clientes/nuevo" element={<ClienteFormulario />} />
+          <Route path="/clientes/ver/:id" element={<ClienteDetalle />} />
           <Route path="productos/lista" element={<ProductosLista />} />
           <Route path="productos/nuevo" element={<ProductoFormulario />} />
           <Route path="facturas/lista" element={<FacturasLista />} />
