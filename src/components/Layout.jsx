@@ -1,4 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { HiMenu } from 'react-icons/hi';
 
 const navItems = [
   { name: 'Inicio', path: '/' },
@@ -9,11 +11,15 @@ const navItems = [
 
 export default function Layout() {
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md p-4 space-y-6">
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md p-4 space-y-6 transform transition-transform duration-300 z-40
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0`}
+      >
         <h2 className="text-xl font-bold text-blue-700">SS Facturación</h2>
         <nav className="space-y-2">
           {navItems.map((item) => (
@@ -25,6 +31,7 @@ export default function Layout() {
                   ? 'bg-blue-600 text-white'
                   : 'text-gray-700 hover:bg-gray-200'
               }`}
+              onClick={() => setSidebarOpen(false)} // Cierra menú en móvil
             >
               {item.name}
             </Link>
@@ -32,10 +39,32 @@ export default function Layout() {
         </nav>
       </aside>
 
+      {/* Overlay (solo en móvil) */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-30 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
+      )}
+
       {/* Main content */}
-      <main className="flex-1 p-6">
-        <Outlet />
-      </main>
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <header className="bg-white shadow-md p-4 flex items-center justify-between md:hidden">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="text-gray-700 text-2xl"
+          >
+            <HiMenu />
+          </button>
+          <h1 className="text-lg font-semibold text-blue-700">SS Facturación</h1>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 p-6">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
