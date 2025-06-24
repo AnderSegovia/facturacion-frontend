@@ -72,9 +72,9 @@ export default function ClientesLista() {
                   <td className="px-4 py-2">
                     {cliente.tipo === 'Consumidor Final' ? cliente.dui : cliente.nrc || '-'}
                   </td>
-                  <td className="px-4 py-2">{cliente.telefono || '-'}</td>
-                  <td className="px-4 py-2">{cliente.correo || '-'}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 text-left hidden md:table-cell">{cliente.telefono || '-'}</td>
+                  <td className="px-4 py-2 text-left hidden md:table-cell">{cliente.correo || '-'}</td>
+                  <td className="px-4 py-2 text-left hidden md:table-cell">
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${
                         cliente.estado === 'activo'
