@@ -56,6 +56,7 @@ export default function FacturasLista() {
           <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-md">
             <thead className="bg-gray-100 text-gray-700 text-sm">
               <tr>
+                <th className="px-4 py-2 text-left">Numero de Factura</th>
                 <th className="px-4 py-2 text-left">Cliente</th>
                 <th className="px-4 py-2 text-left">Tipo</th>
                 <th className="px-4 py-2 text-left">Fecha</th>
@@ -67,6 +68,14 @@ export default function FacturasLista() {
             <tbody className="text-sm text-gray-800">
               {facturas.map((f, i) => (
                 <tr key={f._id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                <td className="px-4 py-2 font-medium">
+                  <button
+                    onClick={() => navigate(`/facturas/ver/${f._id}`)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {f._id}
+                  </button>
+                </td>
                   <td className="px-4 py-2">{f.cliente?.nombre || 'Cliente eliminado'}</td>
                   <td className="px-4 py-2">{f.tipo_documento}</td>
                   <td className="px-4 py-2">
@@ -87,12 +96,6 @@ export default function FacturasLista() {
                     </span>
                   </td>
                   <td className="px-4 py-2 text-center space-x-2">
-                    <button
-                      onClick={() => navigate(`/facturas/ver/${f._id}`)}
-                      className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
-                    >
-                      Ver
-                    </button>
                     {f.estado === 'activo' && (
                       <button
                         onClick={() => anularFactura(f._id)}

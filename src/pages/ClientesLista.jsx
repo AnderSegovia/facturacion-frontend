@@ -69,7 +69,7 @@ export default function ClientesLista() {
                 <tr key={cliente._id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="px-4 py-2 font-medium">
                   <button
-                    onClick={() => navigate(`/clientes/ver/${cliente._id}`)}
+                    onClick={() => navigate(`/clientes/detalle/${cliente._id}`)}
                     className="text-blue-600 hover:underline"
                   >
                     {cliente.nombre}
