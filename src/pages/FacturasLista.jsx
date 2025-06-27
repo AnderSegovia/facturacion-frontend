@@ -184,7 +184,7 @@ export default function FacturasLista() {
                       className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                     >
                       Ver
-                    </button>
+                    </button> 
                     {factura.estado === 'activo' && (
                       <button
                         onClick={() => anularFactura(factura._id)}

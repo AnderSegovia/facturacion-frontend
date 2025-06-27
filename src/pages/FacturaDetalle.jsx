@@ -78,7 +78,6 @@ export default function FacturaDetalle() {
 
   <button
     onClick={() => window.open(`${import.meta.env.VITE_API_URL}/facturas/${factura._id}/ticket`, '_blank')}
-
     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
   >
     Ver Ticket
