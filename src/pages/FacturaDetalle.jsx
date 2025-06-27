@@ -70,16 +70,14 @@ export default function FacturaDetalle() {
   </button>
 
   <button
-    onClick={() => window.open(`https://facturacion-backend-92qu.onrender.com/api/facturas/${factura._id}/pdf`, '_blank')}
-    //onClick={() => window.open(`http://localhost:3001/api/facturas/${factura._id}/pdf`, '_blank')}
+    onClick={() => window.open(`${import.meta.env.VITE_API_URL}/facturas/${factura._id}/pdf`, '_blank')}
     className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
   >
     Ver PDF
   </button>
 
   <button
-    //onClick={() => window.open(`http://localhost:3001/api/facturas/${factura._id}/ticket`, '_blank')}
-    onClick={() => window.open(`https://facturacion-backend-92qu.onrender.com/api/facturas/${factura._id}/ticket`, '_blank')}
+    onClick={() => window.open(`${import.meta.env.VITE_API_URL}/facturas/${factura._id}/ticket`, '_blank')}
 
     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
   >

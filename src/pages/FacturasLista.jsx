@@ -52,8 +52,7 @@ export default function FacturasLista() {
 
   const buscarFacturasConFiltros = async () => {
     const query = new URLSearchParams(filtros).toString();
-    const res = await fetch(`http://localhost:3001/api/facturas?${query}`);
-   // const res = await fetch(`https://facturacion-backend-92qu.onrender.com/api/facturas?${query}`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/facturas?${query}`);
     console.log(query)
     const data = await res.json();
     setFacturas(data);
@@ -178,7 +177,14 @@ export default function FacturasLista() {
                       {factura.estado.toUpperCase()}
                     </span>
                   </td>
+
                   <td className="px-4 py-2 text-center space-x-2">
+                    <button
+                      onClick={() => navigate(`/facturas/ver/${factura._id}`)}
+                      className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Ver
+                    </button>
                     {factura.estado === 'activo' && (
                       <button
                         onClick={() => anularFactura(factura._id)}
