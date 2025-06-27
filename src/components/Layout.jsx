@@ -50,7 +50,7 @@ export default function Layout() {
       {/* Main content, no se mueve */}
       <div className="flex-1 flex flex-col">
         {/* Header (botón visible siempre) */}
-        <header className="bg-white shadow-md p-4 flex items-center justify-between">
+<header className="fixed top-0 left-0 right-0 bg-white shadow-md p-4 flex items-center justify-between z-20">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="text-gray-700 text-2xl"
@@ -61,7 +61,7 @@ export default function Layout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6">
+<main className="flex-1 p-6 pt-20">
           <Outlet />
         </main>
       </div>

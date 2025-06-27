@@ -34,6 +34,7 @@ export default function FacturasLista() {
       console.error('Error al anular factura:', error);
     }
   };
+  
     const [filtros, setFiltros] = useState({
     numero: '',
     cliente: '',

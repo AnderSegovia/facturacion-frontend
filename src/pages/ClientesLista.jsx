@@ -34,6 +34,30 @@ export default function ClientesLista() {
     }
   };
 
+  const [filtros, setFiltros] = useState({
+    nombre: '',
+    tipo: '',
+    documento: '',
+    telefono: '',
+    estado: '',
+  });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      buscarFacturasConFiltros();
+    }, 300); // debounce para evitar muchas peticiones
+
+    return () => clearTimeout(timeout);
+  }, [filtros]);
+
+  const buscarFacturasConFiltros = async () => {
+    const query = new URLSearchParams(filtros).toString();
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/clientes?${query}`);
+    console.log(query)
+    const data = await res.json();
+    setClientes(data);
+  };
+
 return (
   <>
     <div className="flex justify-between items-center mb-4">
@@ -63,14 +87,14 @@ return (
               <input
                 type="text"
                 placeholder="Buscar..."
-                //value={filtros.nombre || ''}
+                value={filtros.nombre || ''}
                 onChange={(e) => setFiltros({ ...filtros, nombre: e.target.value })}
                 className="w-full border rounded px-2 py-1 text-sm"
               />
             </th>
             <th className="px-4 py-1">
               <select
-                //value={filtros.tipo || ''}
+                value={filtros.tipo || ''}
                 onChange={(e) => setFiltros({ ...filtros, tipo: e.target.value })}
                 className="w-full border rounded px-2 py-1 text-sm"
               >
@@ -83,25 +107,18 @@ return (
               <input
                 type="text"
                 placeholder="DUI o NRC"
-                //value={filtros.documento || ''}
+                value={filtros.documento || ''}
                 onChange={(e) => setFiltros({ ...filtros, documento: e.target.value })}
                 className="w-full border rounded px-2 py-1 text-sm"
               />
             </th>
             <th className="px-4 py-1 hidden md:table-cell">
-              <input
-                type="text"
-                placeholder="Teléfono"
-                //value={filtros.telefono || ''}
-                onChange={(e) => setFiltros({ ...filtros, telefono: e.target.value })}
-                className="w-full border rounded px-2 py-1 text-sm"
-              />
             </th>
             <th className="px-4 py-1 hidden md:table-cell">
             </th>
             <th className="px-4 py-1 hidden md:table-cell">
               <select
-                //value={filtros.estado || ''}
+                value={filtros.estado || ''}
                 onChange={(e) => setFiltros({ ...filtros, estado: e.target.value })}
                 className="w-full border rounded px-2 py-1 text-sm"
               >

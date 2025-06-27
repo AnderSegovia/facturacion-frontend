@@ -61,28 +61,28 @@ export default function FacturaDetalle() {
         <div className="font-bold text-base"><strong>Total:</strong> ${factura.total_con_iva.toFixed(2)}</div>
       </div>
 
-<div className="mt-4 flex flex-wrap gap-2">
-  <button
-    onClick={() => navigate(-1)}
-    className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md text-sm"
-  >
-    Regresar
-  </button>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md text-sm"
+        >
+          Regresar
+        </button>
 
-  <button
-    onClick={() => window.open(`${import.meta.env.VITE_API_URL}/facturas/${factura._id}/pdf`, '_blank')}
-    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
-  >
-    Ver PDF
-  </button>
+        <button
+          onClick={() => window.open(`${import.meta.env.VITE_API_URL}/facturas/${factura._id}/pdf`, '_blank')}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
+        >
+          Ver PDF
+        </button>
 
-  <button
-    onClick={() => window.open(`${import.meta.env.VITE_API_URL}/facturas/${factura._id}/ticket`, '_blank')}
-    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
-  >
-    Ver Ticket
-  </button>
-</div>
+        <button
+          onClick={() => window.open(`${import.meta.env.VITE_API_URL}/facturas/${factura._id}/ticket`, '_blank')}
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
+        >
+          Ver Ticket
+        </button>
+      </div>
 
     </div>
   );
