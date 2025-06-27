@@ -34,6 +34,31 @@ export default function ProductosLista() {
     }
   };
 
+  const [filtros, setFiltros] = useState({
+    nombre: '',
+    categoria: '',
+    marca: '',
+    modelo:'',
+    sku: '',
+    ubicacion: '',
+  });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      buscarFacturasConFiltros();
+    }, 300); // debounce para evitar muchas peticiones
+
+    return () => clearTimeout(timeout);
+  }, [filtros]);
+
+  const buscarFacturasConFiltros = async () => {
+    const query = new URLSearchParams(filtros).toString();
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/productos?${query}`);
+    console.log(query)
+    const data = await res.json();
+    setProductos(data);
+  };
+
   return (
     <>
       <div className="flex justify-between items-center mb-4">
@@ -45,12 +70,6 @@ export default function ProductosLista() {
           + Agregar Producto
         </button>
       </div>
-
-      {cargando ? (
-        <div className="text-center text-gray-500 py-10">Cargando productos...</div>
-      ) : productos.length === 0 ? (
-        <div className="text-center text-gray-500 py-10">No hay productos registrados.</div>
-      ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-md">
             <thead className="bg-gray-100 text-gray-700 text-sm">
@@ -65,9 +84,73 @@ export default function ProductosLista() {
                 <th className="px-4 py-2 text-left">Ubicacion</th>
                 <th className="px-4 py-2 text-center">Acciones</th>
               </tr>
+              <tr>
+                <th className="px-4 py-1">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    value={filtros.nombre}
+                    onChange={(e) => setFiltros({ ...filtros, nombre: e.target.value })}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                  />
+                </th>
+                <th className="px-4 py-1 hidden md:table-cell">
+                  <input
+                    type="text"
+                    placeholder="Categoría..."
+                    value={filtros.categoria}
+                    onChange={(e) => setFiltros({ ...filtros, categoria: e.target.value })}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                  />
+                </th>
+                <th className="px-4 py-1">
+                  <input
+                    type="text"
+                    placeholder="Marca..."
+                    value={filtros.marca}
+                    onChange={(e) => setFiltros({ ...filtros, marca: e.target.value })}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                  />
+                </th>
+                <th className="px-4 py-1">
+                  <input
+                    type="text"
+                    placeholder="Modelo..."
+                    value={filtros.modelo}
+                    onChange={(e) => setFiltros({ ...filtros, modelo: e.target.value })}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                  />
+                </th>
+                <th className="px-4 py-1">
+                  <input
+                    type="text"
+                    placeholder="SKU..."
+                    value={filtros.sku}
+                    onChange={(e) => setFiltros({ ...filtros, sku: e.target.value })}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                  />
+                </th>
+                <th></th> {/* Precio */}
+                <th></th> {/* Stock */}
+                <th className="px-4 py-1">
+                  <input
+                    type="text"
+                    placeholder="Ubicación..."
+                    value={filtros.ubicacion}
+                    onChange={(e) => setFiltros({ ...filtros, ubicacion: e.target.value })}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                  />
+                </th>
+                <th></th> {/* Acciones */}
+              </tr>
             </thead>
             <tbody className="text-sm text-gray-800">
-              {productos.map((producto, i) => (
+              {cargando ? (
+                <div className="text-center text-gray-500 py-10">Cargando productos...</div>
+              ) : productos.length === 0 ? (
+                <div className="text-center text-gray-500 py-10">No hay productos registrados.</div>
+              ) : (
+              productos.map((producto, i) => (
                 <tr key={producto._id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="px-4 py-2 font-medium">
                     <button
@@ -102,11 +185,11 @@ export default function ProductosLista() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              ))
+              )}
             </tbody>
           </table>
         </div>
-      )}
     </>
   );
 }

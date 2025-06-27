@@ -26,8 +26,9 @@ export default function FacturaDetalle() {
       <h2 className="text-2xl font-bold mb-2">Factura #{factura._id}</h2>
       <p><strong>Cliente:</strong> {factura.cliente?.nombre || 'Cliente eliminado'}</p>
       <p><strong>Tipo:</strong> {factura.tipo_documento}</p>
+      <p><strong>Telefono:</strong> {factura.cliente?.telefono}</p>
       <p><strong>Fecha:</strong> {new Date(factura.fecha).toLocaleString()}</p>
-      <p><strong>Estado:</strong> {factura.estado}</p>
+      <p><strong>Dui/NRC:</strong> {factura.cliente?.dui || factura.cliente?.nrc}</p>
 
       <hr className="my-4" />
 
