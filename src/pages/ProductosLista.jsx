@@ -58,9 +58,11 @@ export default function ProductosLista() {
                 <th className="px-4 py-2 text-left">Nombre</th>
                 <th className="px-4 py-2 text-left hidden md:table-cell">Categoría</th>
                 <th className="px-4 py-2 text-left">Marca</th>
+                <th className="px-4 py-2 text-left">Modelo</th>
+                <th className="px-4 py-2 text-left">SKU</th>
                 <th className="px-4 py-2 text-left">Precio</th>
                 <th className="px-4 py-2 text-left">Stock</th>
-                <th className="px-4 py-2 text-left hidden md:table-cell">Estado</th>
+                <th className="px-4 py-2 text-left">Ubicacion</th>
                 <th className="px-4 py-2 text-center">Acciones</th>
               </tr>
             </thead>
@@ -77,19 +79,12 @@ export default function ProductosLista() {
                   </td>
                   <td className="px-4 py-2">{producto.categoria || '-'}</td>
                   <td className="px-4 py-2">{producto.marca || '-'}</td>
+                  <td className="px-4 py-2">{producto.modelo || '-'}</td>
+                  <td className="px-4 py-2">{producto.sku || '-'}</td>
                   <td className="px-4 py-2">${producto.precio_venta?.toFixed(2)}</td>
                   <td className="px-4 py-2">{producto.stock}</td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${
-                        producto.estado === 'activo'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-red-100 text-red-700'
-                      }`}
-                    >
-                      {producto.estado.toUpperCase()}
-                    </span>
-                  </td>
+                  <td className="px-4 py-2">{producto.ubicacion || '-'}</td>
+
                   <td className="px-4 py-2 text-center space-x-2">
                     <div className="flex flex-col md:flex-row justify-center gap-2">
                       <button

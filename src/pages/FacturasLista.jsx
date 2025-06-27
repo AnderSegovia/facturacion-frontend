@@ -34,6 +34,31 @@ export default function FacturasLista() {
       console.error('Error al anular factura:', error);
     }
   };
+    const [filtros, setFiltros] = useState({
+    numero: '',
+    cliente: '',
+    tipo: '',
+    fecha: '',
+    estado: '',
+  });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      buscarFacturasConFiltros();
+    }, 300); // debounce para evitar muchas peticiones
+
+    return () => clearTimeout(timeout);
+  }, [filtros]);
+
+  const buscarFacturasConFiltros = async () => {
+    const query = new URLSearchParams(filtros).toString();
+    const res = await fetch(`http://localhost:3001/api/facturas?${query}`);
+   // const res = await fetch(`https://facturacion-backend-92qu.onrender.com/api/facturas?${query}`);
+    console.log(query)
+    const data = await res.json();
+    setFacturas(data);
+  };
+
 
   return (
     <>
@@ -46,71 +71,129 @@ export default function FacturasLista() {
           + Nueva Factura
         </button>
       </div>
-
-      {cargando ? (
-        <div className="text-center text-gray-500 py-10">Cargando facturas...</div>
-      ) : facturas.length === 0 ? (
-        <div className="text-center text-gray-500 py-10">No hay facturas registradas.</div>
-      ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-md">
-            <thead className="bg-gray-100 text-gray-700 text-sm">
-              <tr>
-                <th className="px-4 py-2 text-left">Numero de Factura</th>
-                <th className="px-4 py-2 text-left">Cliente</th>
-                <th className="px-4 py-2 text-left">Tipo</th>
-                <th className="px-4 py-2 text-left">Fecha</th>
-                <th className="px-4 py-2 text-right">Total</th>
-                <th className="px-4 py-2 text-center">Estado</th>
-                <th className="px-4 py-2 text-center">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm text-gray-800">
-              {facturas.map((f, i) => (
-                <tr key={f._id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-4 py-2 font-medium">
-                  <button
-                    onClick={() => navigate(`/facturas/ver/${f._id}`)}
-                    className="text-blue-600 hover:underline"
-                  >
-                    {f._id}
-                  </button>
-                </td>
-                  <td className="px-4 py-2">{f.cliente?.nombre || 'Cliente eliminado'}</td>
-                  <td className="px-4 py-2">{f.tipo_documento}</td>
-                  <td className="px-4 py-2">
-                    {new Date(f.fecha).toLocaleDateString('es-SV')}
-                  </td>
-                  <td className="px-4 py-2 text-right font-medium">
-                    ${f.total_con_iva?.toFixed(2) || '0.00'}
-                  </td>
+        <thead className="bg-gray-100 text-gray-700 text-sm">
+          <tr>
+            <th className="px-4 py-2 text-left">Número de Factura</th>
+            <th className="px-4 py-2 text-left">Cliente</th>
+            <th className="px-4 py-2 text-left">Tipo</th>
+            <th className="px-4 py-2 text-left">Fecha</th>
+            <th className="px-4 py-2 text-right">Total</th>
+            <th className="px-4 py-2 text-center">Estado</th>
+            <th className="px-4 py-2 text-center">Acciones</th>
+          </tr>
+          <tr>
+            <th className="px-4 py-1">
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={filtros.numero || ''}
+                onChange={(e) => setFiltros({ ...filtros, numero: e.target.value })}
+                className="w-full border rounded px-2 py-1 text-sm"
+              />
+            </th>
+            <th className="px-4 py-1">
+              <input
+                type="text"
+                placeholder="Cliente..."
+                value={filtros.cliente || ''}
+                onChange={(e) => setFiltros({ ...filtros, cliente: e.target.value })}
+                className="w-full border rounded px-2 py-1 text-sm"
+              />
+            </th>
+            <th className="px-4 py-1">
+              <select
+                value={filtros.tipo || ''}
+                onChange={(e) => setFiltros({ ...filtros, tipo: e.target.value })}
+                className="w-full border rounded px-2 py-1 text-sm"
+              >
+                <option value="">Todos</option>
+                <option value="Ticket">Ticket</option>
+                <option value="Credito Fiscal">Crédito Fiscal</option>
+              </select>
+            </th>
+            <th className="px-2 py-1 text-center">
+              <div className="flex flex-col space-y-[2px]">
+                <input
+                  type="date"
+                  value={filtros.desde || ''}
+                  onChange={(e) => setFiltros({ ...filtros, desde: e.target.value })}
+                  className="border border-gray-300 rounded px-1 py-[2px] text-xs"
+                  placeholder="Desde"
+                />
+                <input
+                  type="date"
+                  value={filtros.hasta || ''}
+                  onChange={(e) => setFiltros({ ...filtros, hasta: e.target.value })}
+                  className="border border-gray-300 rounded px-1 py-[2px] text-xs"
+                  placeholder="Hasta"
+                />
+              </div>
+            </th>
+            <th></th>
+            <th className="px-4 py-1">
+              <select
+                value={filtros.estado || ''}
+                onChange={(e) => setFiltros({ ...filtros, estado: e.target.value })}
+                className="w-full border rounded px-2 py-1 text-sm"
+              >
+                <option value="">Todos</option>
+                <option value="activo">Activa</option>
+                <option value="anulado">Anulada</option>
+              </select>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {cargando ? (
+            <tr>
+              <td colSpan="7" className="text-center text-gray-500 py-10">
+                Cargando facturas...
+              </td>
+            </tr>
+          ) : facturas.length === 0 ? (
+            <tr>
+              <td colSpan="7" className="text-center text-gray-500 py-10">
+                No hay facturas registradas.
+              </td>
+            </tr>
+          ) : (
+            facturas.map((factura) => (
+              <tr key={factura._id} className="border-t border-gray-200 text-sm">
+                <td className="px-4 py-2">{factura.numero || factura._id}</td>
+                <td className="px-4 py-2">{factura.cliente?.nombre}</td>
+                <td className="px-4 py-2">{factura.tipo_documento}</td>
+                <td className="px-4 py-2">{new Date(factura.fecha).toLocaleDateString()}</td>
+                <td className="px-4 py-2 text-right">${factura.total_con_iva.toFixed(2)}</td>
                   <td className="px-4 py-2 text-center">
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${
-                        f.estado === 'activo'
+                        factura.estado === 'activo'
                           ? 'bg-green-100 text-green-700'
                           : 'bg-red-100 text-red-700'
                       }`}
                     >
-                      {f.estado.toUpperCase()}
+                      {factura.estado.toUpperCase()}
                     </span>
                   </td>
                   <td className="px-4 py-2 text-center space-x-2">
-                    {f.estado === 'activo' && (
+                    {factura.estado === 'activo' && (
                       <button
-                        onClick={() => anularFactura(f._id)}
+                        onClick={() => anularFactura(factura._id)}
                         className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                       >
                         Anular
                       </button>
                     )}
                   </td>
-                </tr>
-              ))}
-            </tbody>
+              </tr>
+            ))
+          )}
+        </tbody>
           </table>
         </div>
-      )}
     </>
   );
 }

@@ -15,12 +15,12 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
+      {/* Sidebar como drawer (oculto hasta que se abre) */}
       <aside
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md p-4 space-y-6 transform transition-transform duration-300 z-40
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0`}
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <h2 className="text-xl font-bold text-blue-700">SS Facturación</h2>
+        <h2 className="text-xl font-bold text-blue-700">OneDevsAnd</h2>
         <nav className="space-y-2">
           {navItems.map((item) => (
             <Link
@@ -31,7 +31,7 @@ export default function Layout() {
                   ? 'bg-blue-600 text-white'
                   : 'text-gray-700 hover:bg-gray-200'
               }`}
-              onClick={() => setSidebarOpen(false)} // Cierra menú en móvil
+              onClick={() => setSidebarOpen(false)} // Cierra menú al hacer clic
             >
               {item.name}
             </Link>
@@ -39,18 +39,18 @@ export default function Layout() {
         </nav>
       </aside>
 
-      {/* Overlay (solo en móvil) */}
+      {/* Overlay en todas las resoluciones */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-30 z-30 md:hidden"
+          className="fixed inset-0 bg-black opacity-30 z-30"
           onClick={() => setSidebarOpen(false)}
         ></div>
       )}
 
-      {/* Main content */}
+      {/* Main content, no se mueve */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="bg-white shadow-md p-4 flex items-center justify-between md:hidden">
+        {/* Header (botón visible siempre) */}
+        <header className="bg-white shadow-md p-4 flex items-center justify-between">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="text-gray-700 text-2xl"
