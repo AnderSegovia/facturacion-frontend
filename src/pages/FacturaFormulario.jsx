@@ -90,6 +90,23 @@ export default function FacturaFormulario() {
       setMensaje('❌ Error al guardar la factura');
     }
   };
+  const esFormularioValido = () => {
+  if (formData.detalles.length === 0) return false;
+  return formData.detalles.every((detalle) => {
+    const producto = productos.find(p => p._id === detalle.producto);
+    if (!producto) return false;
+
+    const stockDisponible = producto.stock || 0;
+    const precioMinimo = (producto.precio_unitario || 0) * 1.1;
+
+    return (
+      detalle.cantidad > 0 &&
+      detalle.cantidad <= stockDisponible &&
+      detalle.precio_unitario >= precioMinimo
+    );
+  });
+};
+
 
   return (
     <div>
@@ -126,40 +143,79 @@ export default function FacturaFormulario() {
         <hr className="my-2" />
 
         <h2 className="text-lg font-semibold">Detalles</h2>
-        {formData.detalles.map((detalle, index) => (
-          <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-center">
-            <select
-              value={detalle.producto}
-              onChange={(e) => handleDetalleChange(index, 'producto', e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1"
-              required
-            >
-              <option value="">Producto</option>
-              {productos.map((p) => (
-                <option key={p._id} value={p._id}>{p.nombre}</option>
-              ))}
-            </select>
+        {formData.detalles.map((detalle, index) => {
+          const productoSeleccionado = productos.find(p => p._id === detalle.producto);
+          const stock = productoSeleccionado?.stock || 0;
+          const precioBase = productoSeleccionado?.precio_unitario || 0;
+          const precioMinimo = +(precioBase * 1.10).toFixed(2);
 
-            <input
-              type="number"
-              value={detalle.cantidad}
-              onChange={(e) => handleDetalleChange(index, 'cantidad', parseInt(e.target.value))}
-              min="1"
-              className="border border-gray-300 rounded-md px-2 py-1"
-            />
+          const cantidadInvalida = detalle.cantidad > stock;
+          const precioInvalido = detalle.precio_unitario < precioMinimo;
 
-            <input
-              type="number"
-              value={detalle.precio_unitario}
-              onChange={(e) => handleDetalleChange(index, 'precio_unitario', parseFloat(e.target.value))}
-              step="0.01"
-              className="border border-gray-300 rounded-md px-2 py-1"
-            />
+          return (
+            <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-3 items-center border p-2 rounded mb-2">
+              
+              {/* Producto */}
+              <select
+                value={detalle.producto}
+                onChange={(e) => handleDetalleChange(index, 'producto', e.target.value)}
+                className="border border-gray-300 rounded-md px-2 py-1"
+                required
+              >
+                <option value="">Producto</option>
+                {productos.map((p) => (
+                  <option key={p._id} value={p._id}>{p.nombre}</option>
+                ))}
+              </select>
 
-            <div className="text-sm text-gray-700">Subtotal: ${detalle.subtotal.toFixed(2)}</div>
-            <div className="text-sm text-gray-700">Total: ${detalle.total.toFixed(2)}</div>
-          </div>
-        ))}
+              {/* Cantidad */}
+              <input
+                type="number"
+                value={detalle.cantidad}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value);
+                  if (!isNaN(val)) {
+                    handleDetalleChange(index, 'cantidad', val);
+                  }
+                }}
+                min="1"
+                max={stock}
+                className={`border rounded-md px-2 py-1 ${cantidadInvalida ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {cantidadInvalida && (
+                <div className="text-xs text-red-600 col-span-full">Cantidad no puede superar el stock ({stock})</div>
+              )}
+
+              {/* Precio Unitario */}
+              <input
+                type="number"
+                value={detalle.precio_unitario}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  if (!isNaN(val)) {
+                    handleDetalleChange(index, 'precio_unitario', val);
+                  }
+                }}
+                min={precioMinimo}
+                step="0.10"
+                className={`border rounded-md px-2 py-1 ${precioInvalido ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {precioInvalido && (
+                <div className="text-xs text-red-600 col-span-full">
+                  Precio debe ser mínimo ${precioMinimo.toFixed(2)}
+                </div>
+              )}
+
+              {/* Mínimo y Stock */}
+              <div className="text-xs text-gray-700">Mínimo: ${precioMinimo}</div>
+              <div className="text-xs text-gray-700">Stock: {stock}</div>
+
+              {/* Total */}
+              <div className="text-xs text-gray-700">Total: ${detalle.total.toFixed(2)}</div>
+            </div>
+          );
+        })}
+
 
         <button
           type="button"
@@ -183,12 +239,16 @@ export default function FacturaFormulario() {
           >
             Cancelar
           </button>
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
-          >
-            Guardar Factura
-          </button>
+<button
+  type="submit"
+  className={`px-4 py-2 rounded-md text-white ${
+    esFormularioValido() ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+  }`}
+  disabled={!esFormularioValido()}
+>
+  Guardar Factura
+</button>
+
         </div>
       </form>
     </div>
