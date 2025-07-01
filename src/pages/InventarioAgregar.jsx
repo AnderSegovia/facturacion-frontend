@@ -57,50 +57,69 @@ export default function InventarioAgregar() {
     }
   };
 
-  return (
-    <div className="p-6 max-w-xl mx-auto bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Agregar Stock por SKU</h1>
+    return (
+    <div className="p-4 sm:p-6 max-w-2xl mx-auto bg-white rounded shadow">
+        <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Agregar Stock por SKU</h1>
 
-      <div className="flex gap-2 mb-4">
+        {/* Input + Botones */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 mb-4 space-y-2 sm:space-y-0">
         <input
-          type="text"
-          value={sku}
-          onChange={(e) => setSku(e.target.value)}
-          placeholder="Escanea o escribe SKU"
-          className="flex-1 border px-3 py-2 rounded"
+            type="text"
+            value={sku}
+            onChange={(e) => setSku(e.target.value)}
+            placeholder="Escanea o escribe SKU"
+            className="flex-1 border px-3 py-2 rounded w-full"
         />
-        <button onClick={() => buscarProducto(sku)} className="bg-blue-600 text-white px-4 rounded">Buscar</button>
-        <button onClick={iniciarEscaner} className="bg-green-600 text-white px-4 rounded">Escanear</button>
-      </div>
+        <button
+            onClick={() => buscarProducto(sku)}
+            className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+        >
+            Buscar
+        </button>
+        <button
+            onClick={iniciarEscaner}
+            className="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+        >
+            Escanear
+        </button>
+        </div>
 
-      {escanerActivo && (
-        <div id="scanner" className="w-full h-[300px] border mb-4" ref={scannerRef}></div>
-      )}
+        {/* Escáner */}
+        {escanerActivo && (
+        <div
+            id="scanner"
+            className="w-full h-[300px] border mb-4 rounded"
+            ref={scannerRef}
+        ></div>
+        )}
 
-      {mensaje && <p className="text-blue-600 mb-4">{mensaje}</p>}
+        {/* Mensaje */}
+        {mensaje && <p className="text-blue-600 mb-4 text-sm">{mensaje}</p>}
 
-      {producto && (
+        {/* Producto */}
+        {producto && (
         <div className="space-y-3">
-          <div><strong>Producto:</strong> {producto.nombre}</div>
-          <div><strong>Stock actual:</strong> {producto.stock}</div>
+            <div><strong>Producto:</strong> {producto.nombre}</div>
+            <div><strong>Stock actual:</strong> {producto.stock}</div>
 
-          <input
+            <input
             type="number"
             min="1"
             value={cantidadAgregar}
             onChange={(e) => setCantidadAgregar(e.target.value)}
             placeholder="Cantidad a agregar"
             className="w-full border px-3 py-2 rounded"
-          />
+            />
 
-          <button
+            <button
             onClick={actualizarStock}
-            className="bg-blue-700 text-white px-4 py-2 rounded mt-2"
-          >
+            className="bg-blue-700 text-white px-4 py-2 rounded w-full sm:w-auto"
+            >
             Actualizar Stock
-          </button>
+            </button>
         </div>
-      )}
+        )}
     </div>
-  );
+    );
+
 }
