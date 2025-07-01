@@ -197,7 +197,7 @@ export default function FacturaFormulario() {
                   }
                 }}
                 min={precioMinimo}
-                step="0.10"
+                step="0.01"
                 className={`border rounded-md px-2 py-1 ${precioInvalido ? 'border-red-500' : 'border-gray-300'}`}
               />
               {precioInvalido && (
