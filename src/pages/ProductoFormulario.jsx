@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Html5Qrcode } from 'html5-qrcode';
 import api from '../api';
 
 export default function ProductoFormulario() {
@@ -17,7 +18,9 @@ export default function ProductoFormulario() {
   });
 
   const [mensaje, setMensaje] = useState('');
+  const [escanerActivo, setEscanerActivo] = useState(false);
   const navigate = useNavigate();
+  const scannerRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +56,28 @@ export default function ProductoFormulario() {
       setMensaje('❌ Error al guardar el producto');
     }
   };
+
+    const iniciarEscaner = async () => {
+    setEscanerActivo(true);
+    const html5QrCode = new Html5Qrcode("scanner");
+
+    try {
+      const config = { fps: 10, qrbox: 250 };
+      await html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        (decodedText) => {
+          setFormData(prev => ({ ...prev, sku: decodedText }));
+          html5QrCode.stop();
+          setEscanerActivo(false);
+        }
+      );
+    } catch (err) {
+      console.error("Error al iniciar escáner:", err);
+      setEscanerActivo(false);
+    }
+  };
+
 
   return (
     <>
@@ -99,14 +124,27 @@ export default function ProductoFormulario() {
           onChange={handleChange}
         />
 
-        <input
-          type="text"
-          name="sku"
-          placeholder="Código SKU"
-          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={formData.sku}
-          onChange={handleChange}
-        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            name="sku"
+            placeholder="Código SKU"
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={formData.sku}
+            onChange={handleChange}
+          />
+          <button
+            type="button"
+            onClick={iniciarEscaner}
+            className="bg-green-600 text-white px-3 rounded"
+          >
+            Escanear
+          </button>
+        </div>
+
+        {escanerActivo && (
+          <div id="scanner" className="md:col-span-2 w-full h-[300px] bg-gray-100 border rounded" ref={scannerRef}></div>
+        )}
 
         <input
           type="number"
