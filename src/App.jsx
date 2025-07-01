@@ -11,6 +11,7 @@ import ProductoDetalle from './pages/ProductoDetalle';
 import FacturasLista from './pages/FacturasLista';   
 import FacturaFormulario from './pages/FacturaFormulario';
 import FacturaDetalle from './pages/FacturaDetalle';
+import InventarioAgregar from './pages/InventarioAgregar'; 
 
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="facturas/lista" element={<FacturasLista />} />
           <Route path="/facturas/nueva" element={<FacturaFormulario />} />
           <Route path="/facturas/ver/:id" element={<FacturaDetalle />} />
+          <Route path="/inventario/agregar" element={<InventarioAgregar />} />
         </Route>
       </Routes>
     </Router>
