@@ -11,6 +11,8 @@ export default function HomeDashboard() {
   const [ventasDiarias, setVentasDiarias] = useState([]);
   const [productosTop, setProductosTop] = useState([]);
   const [clientesTop, setClientesTop] = useState([]);
+  const [stockBajo, setAlertasStock] = useState([]);
+
 
   useEffect(() => {
     cargarDatosDashboard();
@@ -23,6 +25,7 @@ export default function HomeDashboard() {
       setVentasDiarias(res.data.ventasDiarias);
       setProductosTop(res.data.productosTop);
       setClientesTop(res.data.clientesTop);
+      setAlertasStock(res.data.stockBajo);
     } catch (error) {
       console.error('Error cargando datos del dashboard:', error);
     }
@@ -39,6 +42,20 @@ export default function HomeDashboard() {
         <ResumenCard icon={<FaBoxOpen />} label="Facturas Emitidas" valor={resumen.facturas || 0} />
         <ResumenCard icon={<FaUser />} label="Clientes Activos" valor={resumen.clientes || 0} />
       </div>
+
+            {/* 3. Alertas de bajo stock */}
+      {stockBajo.length > 0 && (
+        <div className="bg-red-100 border border-red-300 text-red-800 p-4 rounded shadow">
+          <h2 className="text-lg font-bold mb-2">⚠️ Productos con Bajo Stock</h2>
+          <ul className="space-y-1 list-disc list-inside text-sm">
+            {stockBajo.map((prod) => (
+              <li key={prod._id}>
+                <strong>{prod.nombre}</strong>: solo {prod.stock} unidad{prod.stock === 1 ? '' : 'es'} en inventario.
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* 2. Gráfica de ventas */}
       <div className="bg-white rounded shadow p-4">
