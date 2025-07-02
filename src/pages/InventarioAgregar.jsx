@@ -49,10 +49,8 @@
     const agregarAListaTemporal = () => {
     if (!producto || !cantidadAgregar) return;
 
-    // Verifica si ya está en la lista
     const existente = listaTemporal.find(p => p._id === producto._id);
     if (existente) {
-        // Actualiza cantidad sumando
         const nuevaLista = listaTemporal.map(p =>
         p._id === producto._id
             ? { ...p, cantidad: p.cantidad + parseInt(cantidadAgregar) }
@@ -72,7 +70,6 @@
         ]);
     }
 
-    // Limpia campos
     setProducto(null);
     setCantidadAgregar('');
     setSku('');
@@ -92,12 +89,10 @@
     const guardarTodoElStock = async () => {
     try {
         for (let item of listaTemporal) {
-        // Buscar el producto completo para obtener el stock actual
         const res = await api.get(`/productos/sku/${item.sku}`);
         const producto = res.data;
         const nuevoStock = producto.stock + item.cantidad;
 
-        // Actualiza stock como antes
         await api.put(`/productos/${producto._id}/stock`, { stock: nuevoStock });
         }
 

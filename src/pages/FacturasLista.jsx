@@ -46,7 +46,7 @@ export default function FacturasLista() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       buscarFacturasConFiltros();
-    }, 300); // debounce para evitar muchas peticiones
+    }, 300);
 
     return () => clearTimeout(timeout);
   }, [filtros]);

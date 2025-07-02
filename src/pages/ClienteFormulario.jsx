@@ -27,7 +27,7 @@ export default function Clientes() {
     e.preventDefault();
     try {
       await api.post('/clientes', formData);
-      setMensaje('✅ Cliente guardado correctamente');
+      setMensaje(' Cliente guardado correctamente');
       setFormData({
         nombre: '',
         tipo: 'Consumidor Final',
@@ -42,7 +42,7 @@ export default function Clientes() {
       });
     } catch (error) {
       console.error(error);
-      setMensaje('❌ Error al guardar cliente');
+      setMensaje(' Error al guardar cliente');
     }
   };
 

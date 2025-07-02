@@ -16,7 +16,7 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar como drawer (oculto hasta que se abre) */}
+      {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md p-4 space-y-6 transform transition-transform duration-300 z-40
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
@@ -32,7 +32,7 @@ export default function Layout() {
                   ? 'bg-blue-600 text-white'
                   : 'text-gray-700 hover:bg-gray-200'
               }`}
-              onClick={() => setSidebarOpen(false)} // Cierra menú al hacer clic
+              onClick={() => setSidebarOpen(false)}
             >
               {item.name}
             </Link>
@@ -40,7 +40,7 @@ export default function Layout() {
         </nav>
       </aside>
 
-      {/* Overlay en todas las resoluciones */}
+      {/* Overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black opacity-30 z-30"
@@ -48,9 +48,9 @@ export default function Layout() {
         ></div>
       )}
 
-      {/* Main content, no se mueve */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col">
-        {/* Header (botón visible siempre) */}
+        {/* Header */}
 <header className="fixed top-0 left-0 right-0 bg-white shadow-md p-4 flex items-center justify-between z-20">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}

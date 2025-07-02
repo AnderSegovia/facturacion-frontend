@@ -37,7 +37,7 @@ export default function ProductoFormulario() {
       };
 
       await api.post('/productos', producto);
-      setMensaje('✅ Producto guardado correctamente');
+      setMensaje(' Producto guardado correctamente');
 
       setFormData({
         nombre: '',
@@ -53,7 +53,7 @@ export default function ProductoFormulario() {
       });
     } catch (error) {
       console.error(error);
-      setMensaje('❌ Error al guardar el producto');
+      setMensaje(' Error al guardar el producto');
     }
   };
 

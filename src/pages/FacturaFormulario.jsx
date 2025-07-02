@@ -83,11 +83,11 @@ export default function FacturaFormulario() {
     e.preventDefault();
     try {
       await api.post('/facturas', formData);
-      setMensaje('✅ Factura guardada correctamente');
+      setMensaje(' Factura guardada correctamente');
       setTimeout(() => navigate('/facturas/lista'), 1500);
     } catch (error) {
       console.error(error);
-      setMensaje('❌ Error al guardar la factura');
+      setMensaje(' Error al guardar la factura');
     }
   };
   const esFormularioValido = () => {
@@ -239,15 +239,15 @@ export default function FacturaFormulario() {
           >
             Cancelar
           </button>
-<button
-  type="submit"
-  className={`px-4 py-2 rounded-md text-white ${
-    esFormularioValido() ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
-  }`}
-  disabled={!esFormularioValido()}
->
-  Guardar Factura
-</button>
+          <button
+            type="submit"
+            className={`px-4 py-2 rounded-md text-white ${
+              esFormularioValido() ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+            }`}
+            disabled={!esFormularioValido()}
+          >
+            Guardar Factura
+          </button>
 
         </div>
       </form>
