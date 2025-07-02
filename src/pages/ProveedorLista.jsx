@@ -36,8 +36,6 @@ export default function ProveedoresLista() {
 
   const [filtros, setFiltros] = useState({
     nombre: '',
-    telefono: '',
-    contacto: '',
     estado: '',
   });
 
@@ -90,24 +88,8 @@ export default function ProveedoresLista() {
                   className="w-full border rounded px-2 py-1 text-sm"
                 />
               </th>
-              <th className="px-4 py-1">
-                <input
-                  type="text"
-                  placeholder="Teléfono"
-                  value={filtros.telefono || ''}
-                  onChange={(e) => setFiltros({ ...filtros, telefono: e.target.value })}
-                  className="w-full border rounded px-2 py-1 text-sm"
-                />
-              </th>
-              <th className="px-4 py-1 hidden md:table-cell">
-                <input
-                  type="text"
-                  placeholder="Contacto"
-                  value={filtros.contacto || ''}
-                  onChange={(e) => setFiltros({ ...filtros, contacto: e.target.value })}
-                  className="w-full border rounded px-2 py-1 text-sm"
-                />
-              </th>
+              <th className="px-4 py-1 hidden md:table-cell"></th>
+              <th className="px-4 py-1 hidden md:table-cell"></th>
               <th className="px-4 py-1 hidden md:table-cell"></th>
               <th className="px-4 py-1 hidden md:table-cell"></th>
               <th className="px-4 py-1 hidden md:table-cell">
