@@ -8,6 +8,8 @@ const navItems = [
   { name: 'Productos', path: '/productos/lista' },
   { name: 'Facturas', path: '/facturas/lista' },
   { name: 'Inventario', path: '/inventario/agregar' },
+  { name: 'Proveedores', path: '/proveedores/lista' },
+
 ];
 
 export default function Layout() {

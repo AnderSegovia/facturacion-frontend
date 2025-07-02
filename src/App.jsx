@@ -12,7 +12,9 @@ import FacturasLista from './pages/FacturasLista';
 import FacturaFormulario from './pages/FacturaFormulario';
 import FacturaDetalle from './pages/FacturaDetalle';
 import InventarioAgregar from './pages/InventarioAgregar'; 
-
+import ProveedoresLista from './pages/ProveedorLista';   
+import ProveedorFormulario from './pages/ProveedorFormulario';
+import ProveedorDetalle from './pages/ProveedorDetalle';   
 
 export default function App() {
   return (
@@ -30,6 +32,9 @@ export default function App() {
           <Route path="/facturas/nueva" element={<FacturaFormulario />} />
           <Route path="/facturas/ver/:id" element={<FacturaDetalle />} />
           <Route path="/inventario/agregar" element={<InventarioAgregar />} />
+          <Route path="/proveedores/lista" element={<ProveedoresLista />} />
+          <Route path="proveedores/nuevo" element={<ProveedorFormulario />} />
+          <Route path="/proveedores/detalle/:id" element={<ProveedorDetalle />} />
         </Route>
       </Routes>
     </Router>
