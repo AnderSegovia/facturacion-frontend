@@ -15,6 +15,7 @@ import InventarioAgregar from './pages/InventarioAgregar';
 import ProveedoresLista from './pages/ProveedorLista';   
 import ProveedorFormulario from './pages/ProveedorFormulario';
 import ProveedorDetalle from './pages/ProveedorDetalle';   
+import HistorialCompras from './pages/HistorialCompras';   
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/proveedores/lista" element={<ProveedoresLista />} />
           <Route path="proveedores/nuevo" element={<ProveedorFormulario />} />
           <Route path="/proveedores/detalle/:id" element={<ProveedorDetalle />} />
+          <Route path="/historial-compras" element={<HistorialCompras />} />
         </Route>
       </Routes>
     </Router>

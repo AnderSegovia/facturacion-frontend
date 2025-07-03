@@ -29,7 +29,7 @@ export default function ProveedorFormulario() {
       const res = await api.get(`/proveedores/${id}`);
       setFormData(res.data);
     } catch (err) {
-      setMensaje('❌ Error al cargar proveedor');
+      setMensaje(' Error al cargar proveedor');
     }
   };
 
@@ -43,10 +43,10 @@ export default function ProveedorFormulario() {
     try {
       if (id) {
         await api.put(`/proveedores/${id}`, formData);
-        setMensaje('✅ Proveedor actualizado');
+        setMensaje(' Proveedor actualizado');
       } else {
         await api.post('/proveedores', formData);
-        setMensaje('✅ Proveedor creado');
+        setMensaje(' Proveedor creado');
         setFormData({
           nombre: '',
           telefono: '',
@@ -58,9 +58,9 @@ export default function ProveedorFormulario() {
         });
       }
 
-      setTimeout(() => navigate('/proveedores'), 1000);
+      setTimeout(() => navigate('/proveedores/lista'), 1000);
     } catch (error) {
-      setMensaje('❌ Error al guardar proveedor');
+      setMensaje('Error al guardar proveedor');
       console.error(error);
     }
   };

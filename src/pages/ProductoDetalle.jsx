@@ -39,6 +39,11 @@ export default function ProductoDetalle() {
 
       <div className="bg-white p-6 rounded shadow grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
+          <span className="font-semibold">ID:</span>
+          <div>{producto._id}</div>
+        </div>
+
+        <div>
           <span className="font-semibold">Nombre:</span>
           <div>{producto.nombre}</div>
         </div>
@@ -86,11 +91,10 @@ export default function ProductoDetalle() {
         <div>
           <span className="font-semibold">Estado:</span>
           <span
-            className={`inline-block px-2 py-1 mt-1 rounded-full text-xs font-bold ${
-              producto.estado === 'activo'
+            className={`inline-block px-2 py-1 mt-1 rounded-full text-xs font-bold ${producto.estado === 'activo'
                 ? 'bg-green-100 text-green-700'
                 : 'bg-red-100 text-red-700'
-            }`}
+              }`}
           >
             {producto.estado?.toUpperCase()}
           </span>
