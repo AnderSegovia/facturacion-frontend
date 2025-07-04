@@ -4,8 +4,8 @@ import { HiMenu } from 'react-icons/hi';
 
 const navItems = [
   { name: 'Inicio', path: '/' },
-  { name: 'Ventas', path: '/facturas/lista' },
   { name: 'Clientes', path: '/clientes/lista' },
+  { name: 'Ventas', path: '/despacho' },
   { name: 'Compras', path: '/inventario/agregar' },
   { name: 'Proveedores', path: '/proveedores/lista' },
   { name: 'Productos', path: '/productos/lista' },
