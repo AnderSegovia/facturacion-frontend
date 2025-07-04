@@ -139,7 +139,6 @@ export default function FacturaDespacho() {
         </Link>
     </div>
 
-
       {/* Cliente */}
       <div className="mb-4">
         <label className="font-semibold block mb-1">Buscar Cliente (nombre o DUI):</label>

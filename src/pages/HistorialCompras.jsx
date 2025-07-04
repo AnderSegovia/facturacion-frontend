@@ -1,85 +1,120 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
+import { useNavigate } from 'react-router-dom';
 
 export default function HistorialCompras() {
   const [facturas, setFacturas] = useState([]);
+  const [cargando, setCargando] = useState(true);
   const navigate = useNavigate();
 
+  const [filtros, setFiltros] = useState({
+    proveedor: '',
+    desde: '',
+    hasta: '',
+  });
 
   useEffect(() => {
-    api.get('/factura-compra')
-      .then(res => setFacturas(res.data))
-      .catch(err => console.error('Error al cargar historial:', err));
-  }, []);
+    const timeout = setTimeout(() => {
+      buscarFacturasCompraConFiltros();
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [filtros]);
 
-return (
-    <div className="p-4 max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-            <button
-            onClick={() => navigate(-1)}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md"
-            >
-            ← Regresar
-            </button>
-            <h1 className="text-2xl font-bold text-center">📦 Historial de Compras</h1>
-        </div>
+  const buscarFacturasCompraConFiltros = async () => {
+    const query = new URLSearchParams(filtros).toString();
+    try {
+      const res = await api.get(`/factura-compra?${query}`);
+      setFacturas(res.data);
+    } catch (error) {
+      console.error('Error al obtener facturas de compra:', error);
+    } finally {
+      setCargando(false);
+    }
+  };
 
+  return (
+    <>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Facturas de Compra</h1>
+      </div>
 
-        {facturas.length === 0 ? (
-        <p className="text-gray-600 text-center">No hay facturas registradas.</p>
-        ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {facturas.map((factura, index) => (
-            <div key={factura._id} className="border rounded-lg shadow p-4 bg-white">
-                <div className="mb-3">
-                <h2 className="text-lg font-bold">🧾 Factura #{index + 1}</h2>
-                <p className="text-sm text-gray-600">
-                    Proveedor: <span className="font-medium">{factura.proveedor?.nombre || '—'}</span>
-                </p>
-                <p className="text-xs text-gray-500">
-                    Fecha: {new Date(factura.fecha).toLocaleDateString('es-SV', {
-                    day: '2-digit', month: 'short', year: 'numeric'
-                    })}
-                </p>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-md">
+          <thead className="bg-gray-100 text-gray-700 text-sm">
+            <tr>
+              <th className="px-4 py-2 text-left">Proveedor</th>
+              <th className="px-4 py-2 text-left">Fecha</th>
+              <th className="px-4 py-2 text-right">Subtotal</th>
+              <th className="px-4 py-2 text-right">IVA</th>
+              <th className="px-4 py-2 text-right">Total</th>
+              <th className="px-4 py-2 text-center">Acciones</th>
+            </tr>
+            <tr>
+              <th className="px-4 py-1">
+                <input
+                  type="text"
+                  placeholder="Proveedor..."
+                  value={filtros.proveedor || ''}
+                  onChange={(e) => setFiltros({ ...filtros, proveedor: e.target.value })}
+                  className="w-full border rounded px-2 py-1 text-sm"
+                />
+              </th>
+              <th className="px-2 py-1 text-center">
+                <div className="flex flex-col space-y-[2px]">
+                  <input
+                    type="date"
+                    value={filtros.desde || ''}
+                    onChange={(e) => setFiltros({ ...filtros, desde: e.target.value })}
+                    className="border border-gray-300 rounded px-1 py-[2px] text-xs"
+                    placeholder="Desde"
+                  />
+                  <input
+                    type="date"
+                    value={filtros.hasta || ''}
+                    onChange={(e) => setFiltros({ ...filtros, hasta: e.target.value })}
+                    className="border border-gray-300 rounded px-1 py-[2px] text-xs"
+                    placeholder="Hasta"
+                  />
                 </div>
-
-                <div className="overflow-x-auto">
-                <table className="w-full text-sm border rounded">
-                    <thead className="bg-gray-100">
-                    <tr>
-                        <th className="px-2 py-1 text-left">Producto</th>
-                        <th className="px-2 py-1 text-center">Cant.</th>
-                        <th className="px-2 py-1 text-right">P/U</th>
-                        <th className="px-2 py-1 text-right">IVA</th>
-                        <th className="px-2 py-1 text-right">Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {factura.detalles.map((item, i) => (
-                        <tr key={i} className="border-t">
-                        <td className="px-2 py-1">{item.producto?.nombre || '—'}</td>
-                        <td className="px-2 py-1 text-center">{item.cantidad}</td>
-                        <td className="px-2 py-1 text-right">${item.precio_unitario.toFixed(2)}</td>
-                        <td className="px-2 py-1 text-right">${item.iva.toFixed(2)}</td>
-                        <td className="px-2 py-1 text-right font-semibold">${item.total.toFixed(2)}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-                </div>
-
-                <div className="text-right text-sm mt-2">
-                <p>Subtotal: <span className="font-medium">${factura.total_sin_iva.toFixed(2)}</span></p>
-                <p>IVA: <span className="font-medium">${factura.total_iva.toFixed(2)}</span></p>
-                <p className="font-semibold text-blue-700 text-base">Total: ${factura.total_con_iva.toFixed(2)}</p>
-                </div>
-            </div>
-            ))}
-        </div>
-        )}
-  </div>
-);
-
-
+              </th>
+              <th colSpan={4}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {cargando ? (
+              <tr>
+                <td colSpan="6" className="text-center text-gray-500 py-10">
+                  Cargando facturas de compra...
+                </td>
+              </tr>
+            ) : facturas.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="text-center text-gray-500 py-10">
+                  No hay facturas registradas.
+                </td>
+              </tr>
+            ) : (
+              facturas.map((factura) => (
+                <tr key={factura._id} className="border-t border-gray-200 text-sm">
+                  <td className="px-4 py-2">{factura.proveedor?.nombre || 'Sin proveedor'}</td>
+                  <td className="px-4 py-2">{new Date(factura.fecha).toLocaleDateString()}</td>
+                  <td className="px-4 py-2 text-right">${factura.total_sin_iva.toFixed(2)}</td>
+                  <td className="px-4 py-2 text-right">${factura.total_iva.toFixed(2)}</td>
+                  <td className="px-4 py-2 text-right">${factura.total_con_iva.toFixed(2)}</td>
+                  <td className="px-4 py-2 text-center space-x-2">
+                    <button
+                      onClick={() => navigate(`/facturas-compra/ver/${factura._id}`)}
+                      className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Ver
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
 }
