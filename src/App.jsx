@@ -17,6 +17,7 @@ import ProveedorFormulario from './pages/ProveedorFormulario';
 import ProveedorDetalle from './pages/ProveedorDetalle';   
 import HistorialCompras from './pages/HistorialCompras';  
 import DespachoVentas from './pages/DespachoVenta';   
+import FacturaCompraVer from './pages/FacturaCompraVer';   
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/proveedores/detalle/:id" element={<ProveedorDetalle />} />
           <Route path="/historial-compras" element={<HistorialCompras />} />
           <Route path="/despacho" element={<DespachoVentas />} />
+          <Route path="/historial-compras/ver" element={<FacturaCompraVer />} />
         </Route>
       </Routes>
     </Router>

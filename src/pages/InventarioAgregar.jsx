@@ -14,7 +14,10 @@ export default function FacturaCompraAgregar() {
   const [proveedores, setProveedores] = useState([]);
   const scannerRef = useRef(null);
   const [detalles, setDetalles] = useState([]);
-  const [archivoPdf, setArchivoPdf] = useState(null);
+  const [numeroFactura, setNumeroFactura] = useState('');
+  const [tipoFactura, setTipoFactura] = useState('');
+  const [formaPago, setFormaPago] = useState('');
+  const [fechaVencimiento, setFechaVencimiento] = useState('');
 
 
   useEffect(() => {
@@ -108,43 +111,45 @@ export default function FacturaCompraAgregar() {
     setDetalles(prev => prev.filter(p => p._id !== id));
   };
 
-  const guardarFactura = async () => {
-    if (!proveedor || detalles.length === 0) {
-      alert("Debes seleccionar un proveedor y agregar productos.");
-      return;
-    }
+const guardarFactura = async () => {
+  if (!proveedor || detalles.length === 0 || !numeroFactura || !tipoFactura || !formaPago) {
+    alert("Por favor completa todos los campos requeridos.");
+    return;
+  }
 
-    try {
-        console.log({
-        proveedor,
-        detalles: detalles.map(({ _id, cantidad, precio_unitario, iva, total }) => ({
-            producto: _id,
-            cantidad,
-            precio_unitario,
-            iva,
-            total
-        }))
-        });
-
-      const response = await api.post('/factura-compra', {
-        proveedor,
-        detalles: detalles.map(({ _id, cantidad, precio_unitario, iva, total }) => ({
-          producto: _id,
-          cantidad,
-          precio_unitario,
-          iva,
-          total
-        })),
-      });
-
-      alert(" Factura guardada correctamente");
-      setProveedor('');
-      setDetalles([]);
-    } catch (err) {
-      console.error(err);
-      alert(" Error al guardar la factura");
-    }
+  const payload = {
+    numero_factura: numeroFactura,
+    tipo_factura: tipoFactura,
+    forma_pago: formaPago,
+    proveedor,
+    detalles: detalles.map(({ _id, cantidad, precio_unitario, iva, total }) => ({
+      producto: _id,
+      cantidad,
+      precio_unitario,
+      iva,
+      total
+    })),
   };
+
+  if (formaPago === 'Crédito' && fechaVencimiento) {
+    payload.fecha_vencimiento = fechaVencimiento;
+  }
+
+  try {
+    await api.post('/factura-compra', payload);
+    alert("Factura guardada correctamente");
+    setNumeroFactura('');
+    setTipoFactura('');
+    setFormaPago('');
+    setFechaVencimiento('');
+    setProveedor('');
+    setDetalles([]);
+  } catch (err) {
+    console.error(err);
+    alert("Error al guardar la factura");
+  }
+};
+
 
   return (
     <div className="p-4 sm:p-6 max-w-3xl mx-auto bg-white rounded shadow">
@@ -173,6 +178,61 @@ export default function FacturaCompraAgregar() {
           ))}
         </select>
       </div>
+      {/* Número de Factura */}
+    <div className="mb-4">
+      <label className="block text-sm font-semibold mb-1">Número de Factura</label>
+      <input
+        type="text"
+        value={numeroFactura}
+        onChange={(e) => setNumeroFactura(e.target.value)}
+        placeholder="Ej: A001-123456"
+        className="w-full border px-3 py-2 rounded"
+      />
+    </div>
+
+    {/* Tipo de Factura */}
+    <div className="mb-4">
+      <label className="block text-sm font-semibold mb-1">Tipo de Factura</label>
+      <select
+        className="w-full border px-3 py-2 rounded"
+        value={tipoFactura}
+        onChange={(e) => setTipoFactura(e.target.value)}
+      >
+        <option value="">-- Selecciona un tipo --</option>
+        <option value="Crédito Fiscal">Crédito Fiscal</option>
+        <option value="Consumidor Final">Consumidor Final</option>
+      </select>
+    </div>
+
+    {/* Forma de Pago */}
+    <div className="mb-4">
+      <label className="block text-sm font-semibold mb-1">Forma de Pago</label>
+      <select
+        className="w-full border px-3 py-2 rounded"
+        value={formaPago}
+        onChange={(e) => setFormaPago(e.target.value)}
+      >
+        <option value="">-- Selecciona una forma --</option>
+        <option value="Efectivo">Efectivo</option>
+        <option value="Transferencia">Transferencia</option>
+        <option value="Cheque">Cheque</option>
+        <option value="Crédito">Crédito</option>
+      </select>
+    </div>
+
+    {/* Fecha de vencimiento (si aplica) */}
+    {formaPago === 'Crédito' && (
+      <div className="mb-4">
+        <label className="block text-sm font-semibold mb-1">Fecha de Vencimiento</label>
+        <input
+          type="date"
+          value={fechaVencimiento}
+          onChange={(e) => setFechaVencimiento(e.target.value)}
+          className="w-full border px-3 py-2 rounded"
+        />
+      </div>
+    )}
+
 
       {/* Input SKU y botones */}
       <div className="flex flex-col sm:flex-row gap-2 mb-4">
